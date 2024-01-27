@@ -3,19 +3,19 @@ import { Navbar, Nav, Container } from "react-bootstrap";
 import { FaShoppingCart, FaUser } from "react-icons/fa";
 import { LinkContainer } from "react-router-bootstrap";
 
-import SDLogo from "../assets/logo2.png";
+import SDLogo from "../assets/Tlogo2.png";
 
 const Header = () => {
   return (
     <header>
-      <Navbar bg="primary" variant="dark" expand="md" collapseOnSelect>
+      <Navbar bg="primary" variant="dark" expand="lg" collapseOnSelect>
         <Container>
           <LinkContainer to="/">
             <Navbar.Brand className="d-flex align-items-center">
               <img
                 src={SDLogo}
                 alt="TechShop"
-                style={{ height: "50px" }}
+                style={{ width: "50px" }}
                 className="me-1"
               />
               TechShop
