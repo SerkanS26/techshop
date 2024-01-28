@@ -22,10 +22,12 @@ const errorHandler = (err, req, res, next) => {
     });
   }
 
-  res.status(statusCode).res.json({
-    message,
-    stack: process.env.NODE_ENV === "production" ? "🍰" : err.stack,
-  });
+  next();
+
+  // res.status(statusCode).res.json({
+  //   message,
+  //   stack: process.env.NODE_ENV === "production" ? "🍰" : err.stack,
+  // });
 };
 
 //exporting multiple functions
