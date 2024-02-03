@@ -9,6 +9,18 @@ const notFound = (req, res, next) => {
 
 //error handler middleware
 
+const errorHandler = (err, req, res, next) => {
+  const statusCode = res.statusCode || 500;
+
+  const message = err.message || "Resource not found";
+  res.status(statusCode).json({
+    success: false,
+    statusCode,
+    message,
+    stack: process.env.NODE_ENV === "production" ? "🍰" : err.stack,
+  });
+};
+
 // const errorHandler = (err, req, res, next) => {
 //   let statusCode = res.statusCode === 200 ? 500 : res.statusCode;
 //   let message = err.message;
@@ -23,19 +35,6 @@ const notFound = (req, res, next) => {
 //     });
 //   }
 // };
-
-const errorHandler = (err, req, res, next) => {
-  console.log("errorHandler middleware");
-  const statusCode = res.statusCode || 500;
-
-  const message = err.message || "Resource not found";
-  res.status(statusCode).json({
-    success: false,
-    statusCode,
-    message,
-    stack: process.env.NODE_ENV === "production" ? "🍰" : err.stack,
-  });
-};
 
 //exporting multiple functions
 export { notFound, errorHandler };
