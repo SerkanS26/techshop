@@ -1,13 +1,45 @@
 import React from "react";
-import { Navbar, Nav, Container, Badge } from "react-bootstrap";
-import { FaShoppingCart, FaUser } from "react-icons/fa";
+
+// react-router-dom
+import { useNavigate } from "react-router-dom";
+
+// react-router-bootstrap
+import { Navbar, Nav, Container, Badge, NavDropdown } from "react-bootstrap";
+
+// React-Router-bootstrap
 import { LinkContainer } from "react-router-bootstrap";
-import { useSelector } from "react-redux";
+
+// React-Icons
+import { FaShoppingCart, FaUser } from "react-icons/fa";
+
+// Redux
+import { useSelector, useDispatch } from "react-redux";
+
+// Actions
+import { useLogoutMutation } from "../slices/usersApiSlice";
+import { logout } from "../slices/authSlice";
 
 import SDLogo from "../assets/Tlogo2.png";
 
 const Header = () => {
   const { cartItems } = useSelector((state) => state.cart);
+  const { userInfo } = useSelector((state) => state.auth);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [logoutApiCall] = useLogoutMutation();
+
+  // Logout Handler
+  const logoutHandler = async () => {
+    try {
+      await logoutApiCall().unwrap();
+      dispatch(logout());
+      navigate("/login");
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <header>
@@ -38,12 +70,23 @@ const Header = () => {
                   )}
                 </Nav.Link>
               </LinkContainer>
-              <LinkContainer to="/signin">
-                <Nav.Link className="d-flex align-items-center">
-                  <FaUser className="mx-1" />
-                  Sign In
-                </Nav.Link>
-              </LinkContainer>
+              {userInfo ? (
+                <NavDropdown title={userInfo.name} id="userInfo">
+                  <LinkContainer to="/profile">
+                    <NavDropdown.Item>Profile</NavDropdown.Item>
+                  </LinkContainer>
+                  <NavDropdown.Item onClick={logoutHandler}>
+                    Logout
+                  </NavDropdown.Item>
+                </NavDropdown>
+              ) : (
+                <LinkContainer to="/login">
+                  <Nav.Link className="d-flex align-items-center">
+                    <FaUser className="mx-1" />
+                    Sign In
+                  </Nav.Link>
+                </LinkContainer>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>
