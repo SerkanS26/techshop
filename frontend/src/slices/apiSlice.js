@@ -10,5 +10,6 @@ export const apiSlice = createApi({
   endpoints: (builder) => ({
     // Products Endpoints from productsApiSlice /injectEndpoints
     // Users Endpoints from usersApiSlice /injectEndpoints
+    // Orders Endpoints from ordersApiSlice /injectEndpoints
   }),
 });
