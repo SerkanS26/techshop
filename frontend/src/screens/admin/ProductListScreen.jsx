@@ -7,14 +7,18 @@ import { LinkContainer } from "react-router-bootstrap";
 import { Table, Button, Row, Col } from "react-bootstrap";
 
 // react-icons
-import { FaTimes, FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaTrash } from "react-icons/fa";
 
 // react-toastify
 import { toast } from "react-toastify";
 
+// react-router-dom
+import { useParams } from "react-router-dom";
+
 // components
 import Message from "../../components/Message";
 import Loader from "../../components/Loader";
+import Paginate from "../../components/Paginate";
 
 // products api call
 import {
@@ -24,8 +28,11 @@ import {
 } from "../../slices/productsApiSlice";
 
 const ProductListScreen = () => {
+  const { pageNumber } = useParams();
   // get products
-  const { data: products, isLoading, error, refetch } = useGetProductsQuery();
+  const { data, isLoading, error, refetch } = useGetProductsQuery({
+    pageNumber,
+  });
 
   // create product
   const [createProduct, { isLoading: loadingCreate }] =
@@ -78,7 +85,7 @@ const ProductListScreen = () => {
       {isLoading ? (
         <Loader />
       ) : error ? (
-        <Message variant="danger">{error}</Message>
+        <Message variant="danger">{error.data.message}</Message>
       ) : (
         <>
           <Table striped hover responsive className="table-sm">
@@ -93,7 +100,7 @@ const ProductListScreen = () => {
               </tr>
             </thead>
             <tbody>
-              {products.map((product) => (
+              {data.products.map((product) => (
                 <tr key={product._id}>
                   <td>{product._id}</td>
                   <td>{product.name}</td>
@@ -121,6 +128,12 @@ const ProductListScreen = () => {
               ))}
             </tbody>
           </Table>
+          <Paginate
+            pages={data.pages}
+            page={data.page}
+            isAdmin={true}
+            pageNumber={pageNumber}
+          />
         </>
       )}
     </>

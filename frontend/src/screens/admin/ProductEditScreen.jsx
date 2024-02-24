@@ -91,7 +91,7 @@ const ProductEditScreen = () => {
       toast.success(res.message);
       setImage(res.image);
     } catch (err) {
-      toast.error(err?.data?.error || err.error);
+      toast.error(err?.data?.message || err.error);
     }
   };
 
@@ -107,7 +107,7 @@ const ProductEditScreen = () => {
         {isLoading ? (
           <Loader />
         ) : error ? (
-          <Message variant="danger">{error}</Message>
+          <Message variant="danger">{error.data.message}</Message>
         ) : (
           <Form onSubmit={submitHandler}>
             <Form.Group controlId="name" className="my-3">

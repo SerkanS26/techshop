@@ -4,9 +4,9 @@ import { apiSlice } from "./apiSlice";
 export const productsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getProducts: builder.query({
-      query: ({ pageNumber }) => ({
+      query: ({ keyword, pageNumber }) => ({
         url: PRODUCTS_URL,
-        params: { pageNumber },
+        params: { keyword, pageNumber },
       }),
       providesTags: ["Products"], // tells RTK Query to cache the results of this query with the tag "Product"
       keepUnusedDataFor: 5,
@@ -53,6 +53,13 @@ export const productsApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Product"], // stops the query from being cached and forces a refetch after the mutation is complete
     }),
+    getTopProducts: builder.query({
+      query: () => ({
+        url: `${PRODUCTS_URL}/top`,
+      }),
+      providesTags: ["Products"],
+      keepUnusedDataFor: 5,
+    }),
   }),
 });
 
@@ -64,4 +71,5 @@ export const {
   useUploadProductImageMutation,
   useDeleteProductMutation,
   useCreateReviewMutation,
+  useGetTopProductsQuery,
 } = productsApiSlice;

@@ -1,9 +1,11 @@
 import React from "react";
 
+import SearchBox from "./SearchBox";
+
 // react-router-dom
 import { useNavigate } from "react-router-dom";
 
-// react-router-bootstrap
+// react-bootstrap
 import { Navbar, Nav, Container, Badge, NavDropdown } from "react-bootstrap";
 
 // React-Router-bootstrap
@@ -21,6 +23,8 @@ import { logout } from "../slices/authSlice";
 
 import SDLogo from "../assets/Tlogo2.png";
 
+import { resetCart } from "../slices/cartSlice";
+
 const Header = () => {
   const { cartItems } = useSelector((state) => state.cart);
   const { userInfo } = useSelector((state) => state.auth);
@@ -35,6 +39,7 @@ const Header = () => {
     try {
       await logoutApiCall().unwrap();
       dispatch(logout());
+      dispatch(resetCart());
       navigate("/login");
     } catch (err) {
       console.log(err);
@@ -58,9 +63,10 @@ const Header = () => {
           </LinkContainer>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="ms-auto">
+            <Nav className="ms-auto ">
+              <SearchBox />
               <LinkContainer to="/cart">
-                <Nav.Link className="d-flex align-items-center">
+                <Nav.Link className="">
                   <FaShoppingCart className="mx-1" />
                   Cart
                   {cartItems.length > 0 && (
@@ -81,7 +87,7 @@ const Header = () => {
                 </NavDropdown>
               ) : (
                 <LinkContainer to="/login">
-                  <Nav.Link className="d-flex align-items-center">
+                  <Nav.Link className="">
                     <FaUser className="mx-1" />
                     Sign In
                   </Nav.Link>
