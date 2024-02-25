@@ -64,6 +64,7 @@ const CartScreen = () => {
                       onChange={(e) =>
                         addToCartHandler(item, Number(e.target.value))
                       }
+                      className="mb-2"
                     >
                       {[...Array(item.countInStock).keys()].map((x) => (
                         <option key={x + 1}>{x + 1}</option>
